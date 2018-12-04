@@ -1,4 +1,3 @@
-library(keras)
 library(fastmatch)
 # split data
 
