@@ -3,7 +3,7 @@ library(pixmap)
 library(magick)
 
 wd <- getwd()
-fullDir = paste(wd,"/scale4Faces/",sep="")
+fullDir = paste(wd,"/scale2Faces/",sep="")
 print(fullDir)
 all.files <- list.files(path=fullDir)
 
@@ -26,8 +26,8 @@ for (fileName in all.files){
 }
 
 # bdf flattens to data.frame (list) ; pixelMap[[1]] is a multi-dimensional list
-bdf <- as.data.frame(pixelMap[[1]])
-typeof(bdf)
+#bdf <- as.data.frame(pixelMap[[1]])
+#typeof(bdf)
 typeof(pixelMap)
 
 
