@@ -1,9 +1,10 @@
 library(qdapRegex)
 library(pixmap)
 library(magick)
+library(imager)
 
 wd <- getwd()
-fullDir = paste(wd,"/scale2Faces/",sep="")
+fullDir = paste(wd,"/scale4Faces/",sep="")
 print(fullDir)
 all.files <- list.files(path=fullDir)
 
@@ -11,7 +12,6 @@ n.imageIndex = 1
 emotionLabel <- NULL
 positionLabel <- NULL
 pixelMap <- NULL
-images <- NULL
 
 for (fileName in all.files){
   currVec = rm_between(fileName, "_", "_", extract=TRUE)

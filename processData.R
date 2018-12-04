@@ -1,4 +1,5 @@
 library(fastmatch)
+library(keras)
 # split data
 
 #train_images <- array(dim=c(n.train.im, 28, 28))
@@ -8,10 +9,14 @@ n <- length(pixelMap)     # num of imgs
 set.seed(1)
 train <- sample(n,0.8*n)
 
-train_images[[1]] <- pixelMap[train]
+train_images <- NULL
+
+train_images <- pixelMap[train]
 train_emotion <- emotionLabel[train]
 
-test_images[[1]] <- pixelMap[-train]
+test_images <- NULL
+
+test_images <- pixelMap[-train]
 test_emotion <- emotionLabel[-train]
 
 
@@ -32,15 +37,7 @@ for (j in 1:numTestImages)  test_final_images[j,,]  <- train_images[[j]]
 train_emotion_onehot <- fmatch(train_emotion, c("angry","happy","neutral","sad"))
 test_emotion_onehot <- fmatch(test_emotion, c("angry","happy","neutral","sad"))
 
-head(train_emotion, 10)
-head(train_emotion_onehot, 10)
-head(train_oneHot, 10)
-
 
 train_oneHot <- to_categorical(train_emotion_onehot-1)
 test_oneHot <- to_categorical(test_emotion_onehot-1)
-
-head(test_emotion, 10)
-head(test_emotion_onehot, 10)
-head(test_oneHot, 10)
 
