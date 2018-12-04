@@ -14,7 +14,7 @@ hiddenLayerNodes = (499+4)/2
 
 
 emotionModel <- keras_model_sequential(layers=list(
-                layer_flatten(input_shape = c(64,30)),
+                layer_flatten(input_shape = c(32,30)),
                 layer_dense(units=hiddenLayerNodes, activation = 'relu'),    # not sure about hidden layer unit size yet
                 layer_dense(units = ncol(train_oneHot),activation = 'softmax')))
                 
