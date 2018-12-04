@@ -18,26 +18,18 @@ for (fileName in all.files){
   emotionLabel[n.imageIndex] <- currVec[[1]][2]
   positionLabel[n.imageIndex] <- currVec[[1]][1]
   
-  magickObj <- image_read(paste(fullDir,fileName,sep=""))
-  cimgObj <- magick2cimg(magickObj)
+  magickObj <- image_read(paste(fullDir,fileName,sep=""))         # use magick to read pgm extension
+  cimgObj <- magick2cimg(magickObj)                       # convert magick to cimg, for functionality
   
   pixelMap[[n.imageIndex]] <- cimgObj
   n.imageIndex <- n.imageIndex + 1
 }
 
+# bdf flattens to data.frame (list) ; pixelMap[[1]] is a multi-dimensional list
+bdf <- as.data.frame(pixelMap[[1]])
+typeof(bdf)
+typeof(pixelMap)
 
-# # create magick object (needed to read pgm extension)
-# testImagepath = paste(fullDir,"an2i_left_angry_open_4.pgm",sep="")
-# parrots <- image_read(testImagepath)
-# bitmap <- parrots[[1]]
-# parrots
-# 
-# # convert magick to cimg to work with professor's code/ more functionality https://cran.r-project.org/web/packages/imager/vignettes/gettingstarted.html
-# cimg <- magick2cimg(parrots)
-# # plot image
-# plot(cimg)
-# bdf <- as.data.frame(cimg)  #960 Obs = 32*30
-# 
 
 
 
