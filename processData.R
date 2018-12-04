@@ -29,7 +29,7 @@ for (j in 1:numTrainImages)  train_final_images[j,,]  <- train_images[[j]]
 
 numTestImages = length(test_images)
 test_final_images <- array(dim=c(numTestImages, 32, 30))
-for (j in 1:numTestImages)  test_final_images[j,,]  <- train_images[[j]]
+for (j in 1:numTestImages)  test_final_images[j,,]  <- test_images[[j]]
 
 
 # one hot encoding
