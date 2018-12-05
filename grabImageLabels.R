@@ -14,13 +14,20 @@ emotionLabel <- NULL
 positionLabel <- NULL
 nameLabel <- NULL
 pixelMap <- NULL
+sunglassesLabel <- NULL
+
+
+
 
 for (fileName in all.files){
   currVec = rm_between(fileName, "_", "_", extract=TRUE)
   emotionLabel[n.imageIndex] <- currVec[[1]][2]
   positionLabel[n.imageIndex] <- currVec[[1]][1]
   nameLabel[n.imageIndex]<-gsub("_.*","",fileName)
-  sunglassesLabel[n.imageIndex] <- gsub( " .*$", "", fileName)
+  
+  sunglassesSplit <- strsplit(fileName, '_')
+  sunglassesVal <- sunglassesSplit[[1]][4]
+  sunglassesLabel[n.imageIndex] <- substring(sunglassesVal,1,nchar(sunglassesVal)-4)
   
   
   magickObj <- image_read(paste(fullDir,fileName,sep=""))         # use magick to read pgm extension
@@ -29,7 +36,6 @@ for (fileName in all.files){
   pixelMap[[n.imageIndex]] <- cimgObj
   n.imageIndex <- n.imageIndex + 1
 }
-
 
 
 
