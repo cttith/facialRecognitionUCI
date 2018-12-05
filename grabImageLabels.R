@@ -2,6 +2,10 @@ library(qdapRegex)
 library(pixmap)
 library(magick)
 library(imager)
+
+
+use_session_with_seed(1)
+################ [BEFORE RUNNING] GO TO SESSION > SET WORKING DIRECTORY > TO SOURCE FILE LOCATION 
 setwd("C:/Users/Christian/Desktop/dev/projects/facialRecognition/facialRecognitionUCI")
 
 wd <- getwd()

@@ -1,10 +1,16 @@
 # Model for Sunglasses ANN
 
 # SETTING UP LAYERS
-
+use_session_with_seed(1)
 early_stop <- callback_early_stopping(monitor = "val_loss", 
                                       patience = 20)
 Sunglasses_hiddenLayerNodes = (499+2)/2
+
+
+rand_test = sample(1:499, 499)
+
+temp_train_images_ANN = train_images_ANN[rand_test,,]
+temp_train_sunglasses_onehot = train_sunglasses_onehot[rand_test,]
 
 
 model <- keras_model_sequential(layers=list(

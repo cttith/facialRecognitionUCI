@@ -6,6 +6,7 @@ library(keras)
 
 n <- length(pixelMap)     # num of imgs
 set.seed(1)
+
 train <- sample(n,0.8*n)
 
 
