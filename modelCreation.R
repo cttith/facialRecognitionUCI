@@ -1,77 +1,80 @@
 # SETTING UP LAYERS
-library(keras)
 
-# training_images <- list()
-# for(i in (1:length(train_images))) {
-#   training_images[[i]] <- train_images[[i]]
-# }
-# 
-# training_images[[1]]
+early_stop <- callback_early_stopping(monitor = "val_loss", 
+                                      patience = 20)
+face_hiddenLayerNodes = (499+20)/2
 
 
+model <- keras_model_sequential(layers=list(
+  layer_flatten(input_shape = c(128,120)),
+  layer_dense(units=face_hiddenLayerNodes, activation = 'relu'),    # not sure about hidden layer unit size yet
+  layer_dense(units = ncol(train_face_onehot),activation = 'softmax')))
 
-hiddenLayerNodes = (499+4)/2
+model
 
-
-emotionModel <- keras_model_sequential(layers=list(
-                layer_flatten(input_shape = c(32,30)),
-                layer_dense(units=hiddenLayerNodes, activation = 'relu'),    # not sure about hidden layer unit size yet
-                layer_dense(units = ncol(train_oneHot),activation = 'softmax')))
-                
-emotionModel
-
-compile(emotionModel,
+compile(model,
         optimizer ='adam',
         loss='categorical_crossentropy',
         metrics = 'accuracy')
 
 # Fitting model
-emotionHistory <- fit(emotionModel,
-                      train_final_images, train_oneHot,
-                      validation_split = 0.2, batch_size=32,
-                      epochs = 500)
+faceHistory <- fit(model,
+                   train_final_images, train_face_onehot,
+                   validation_split = 0.2, batch_size=32,
+                   early_stop=list(early_stop),
+                   epochs = 20)
 
 
-score <- evaluate(emotionModel,
-                  test_final_images, test_oneHot)
+score <- evaluate(model,
+                  test_final_images, test_face_onehot)
+
+cat('Test loss:', score$loss, "\n")
+cat('Test accuracy:', score$acc, "\n")
 
 
 
-########### SETTING UP NEW MODEL
+
+############## [ IGNORE BELOW FOR NOW] ##################
+
+########### SETTING UP NEW MODEL   
 model<-keras_model_sequential()
 #configuring the Model
 model %>%  
-  #defining a 2-D convolution layer
   
-  layer_conv_2d(filter=32,kernel_size=c(3,3),padding="same",input_shape=c(32,30,1) ) %>%  
-  layer_activation("relu") %>%  
-  #another 2-D convolution layer
+  layer_conv_2d(filter=32,kernel_size=c(3,3),padding="same",input_shape=c(128,120,1),activation = "relu") %>%  
+  layer_max_pooling_2d(pool_size=c(2,2)) %>%  
   
-  layer_conv_2d(filter=32 ,kernel_size=c(3,3))  %>%  layer_activation("relu") %>%
-  #Defining a Pooling layer which reduces the dimentions of the #features map and reduces the computational complexity of the model
+  layer_conv_2d(filter=32,kernel_size=c(3,3), activation = "relu") %>%  
   layer_max_pooling_2d(pool_size=c(2,2)) %>%  
-  #dropout layer to avoid overfitting
-  layer_dropout(0.25) %>%
-  layer_conv_2d(filter=32 , kernel_size=c(3,3),padding="same") %>% layer_activation("relu") %>%  layer_conv_2d(filter=32,kernel_size=c(3,3) ) %>%  layer_activation("relu") %>%  
+  
+  layer_conv_2d(filter=32,kernel_size=c(3,3), activation = "relu") %>%  
   layer_max_pooling_2d(pool_size=c(2,2)) %>%  
-  layer_dropout(0.25) %>%
-  #flatten the input  
-  layer_flatten() %>%  
-  layer_dense(512) %>%  
-  layer_activation("relu") %>%  
-  layer_dropout(0.5) %>%  
-  #output layer-10 classes-10 units  
-  layer_dense(4) %>%  
-  #applying softmax nonlinear activation function to the output layer #to calculate cross-entropy  
-  layer_activation("softmax") 
-#for computing Probabilities of classes-"logit(log probabilities)
+  
+  layer_conv_2d(filter=32,kernel_size=c(3,3), activation = "relu") %>%  
+  layer_max_pooling_2d(pool_size=c(2,2)) %>%  
+  
+  layer_conv_2d(filter=32,kernel_size=c(3,3), activation = "relu") %>%  
+  layer_max_pooling_2d(pool_size=c(2,2)) %>%  
+  
+  layer_flatten() %>%
+  layer_dense(units = 4,activation = "softmax") 
+
+
+
+
 
 
 compile(model,
         optimizer ='adam',
         loss='categorical_crossentropy',
         metrics = 'accuracy')
-model2 <- fit(model,
-                      train_images_new_model, train_oneHot,
-                      validation_split = 0.2, batch_size=32,
-                      epochs = 500)
+
+modelHistory <- fit(model,
+                    train_images_new_model, train_oneHot,
+                    validation_split = 0.2, batch_size=32,
+                    epochs = 500,
+                    callbacks = list(early_stop))
+
+
+score <- evaluate(model,
+                  test_final_images_new_model, test_oneHot)

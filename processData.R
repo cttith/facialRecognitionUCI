@@ -13,33 +13,41 @@ train_images <- NULL
 
 train_images <- pixelMap[train]
 train_emotion <- emotionLabel[train]
+train_faces <- nameLabel[train]
 
 test_images <- NULL
 
 test_images <- pixelMap[-train]
 test_emotion <- emotionLabel[-train]
+test_faces <- nameLabel[-train]
 
-train_images_new_model <- array(dim=c(numTrainImages, 32, 30,1))
+
+numTrainImages = length(train_images)
+train_images_new_model <- array(dim=c(numTrainImages, 128, 120,1))
 for( j in 1:numTrainImages) train_images_new_model[j,,,] <- train_images[[j]]
+
+numTestImages = length(test_images)
+test_final_images_new_model <- array(dim=c(numTestImages, 128, 120,1))
+for (j in 1:numTestImages)  test_final_images_new_model[j,,,]  <- test_images[[j]]
 
 #####UP TO HERE, IT'S CORRECT, A1
 
-numTrainImages = length(train_images)
-train_final_images <- array(dim=c(numTrainImages, 32, 30))
+train_final_images <- array(dim=c(numTrainImages, 128, 120))
 for (j in 1:numTrainImages)  train_final_images[j,,]  <- train_images[[j]]
 
 
-numTestImages = length(test_images)
-test_final_images <- array(dim=c(numTestImages, 32, 30))
+test_final_images <- array(dim=c(numTestImages, 128, 120))
 for (j in 1:numTestImages)  test_final_images[j,,]  <- test_images[[j]]
 
 
-# one hot encoding
+# one hot encoding 
 
 train_emotion_onehot <- fmatch(train_emotion, c("angry","happy","neutral","sad"))
 test_emotion_onehot <- fmatch(test_emotion, c("angry","happy","neutral","sad"))
 
-
 train_oneHot <- to_categorical(train_emotion_onehot-1)
 test_oneHot <- to_categorical(test_emotion_onehot-1)
+
+train_face_onehot <- to_categorical(as.numeric(as.factor(train_faces))-1)
+test_face_onehot <- to_categorical(as.numeric(as.factor(test_faces))-1)
 
