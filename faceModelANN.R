@@ -4,7 +4,7 @@
 use_session_with_seed(1)
 early_stop <- callback_early_stopping(monitor = "val_loss", 
                                       patience = 20)
-Face_hiddenLayerNodes = (499+20)/2
+Face_hiddenLayerNodes = ((128*120)+2)/2
 
 
 

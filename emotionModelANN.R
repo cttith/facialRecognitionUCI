@@ -4,7 +4,8 @@
 use_session_with_seed(1)
 early_stop <- callback_early_stopping(monitor = "val_loss", 
                                       patience = 20)
-Emotion_hiddenLayerNodes = (499+4)/2
+emotion_hiddenLayerNodes = ((128*120)+2)/2
+
 
 
 rand_test = sample(1:499, 499)
