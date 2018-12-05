@@ -1,6 +1,6 @@
 # Model for Emotions CNN
 use_session_with_seed(1)
-emotion_hiddenLayersNodes = (499+4)/2
+emotion_hiddenLayersNodes = ((128*120)+2)/2
 
 emotionModel<-keras_model_sequential()
 #configuring the Model
