@@ -1,15 +1,14 @@
 #This file makes ANN models using the whole dataset (no train/test split)
 #its a smart idea to use smaller images
-
-#first lets get our images formatted correctly
+library(keras)
 
 totalImages <- length(pixelMap)
 
+#first lets get our images formatted correctly, as 2d arrays
 totalImagesANN <- array(dim = c(totalImages, 128, 120))
 for(j in 1:totalImages) totalImagesANN[j,,] <- totalImagesANN[[j]]
 
 
-library(keras)
 #one hot encode all labels
 allEmotionsOneHot <- to_categorical(
   as.numeric(as.factor(emotionLabel)))
@@ -45,17 +44,11 @@ sunglassesHiddenLayerNodes = (inputNodes + ncol(allSunglassesOneHot))/2
 positionsHiddenLayerNodes = (inputNodes + ncol(allPositionsOneHot))/2
 
 
-
 earlyStop <- callback_early_stopping(monitor = "val_lass",
                                       patience = 20)
 
-
-
-
 #because this is very computationally expensive, we've decreased the
 #hidden layer nodes substantially
-
-
 
 #we will now build the models
 
@@ -83,11 +76,6 @@ fullEmotionHistory <- fit(fullEmotionsModel,
 
 
 
-
-
-
-
-
 #faces model
 use_session_with_seed(1)
 fullFacesModel <- keras_model_sequential(layers = list(
@@ -107,7 +95,6 @@ fullFacesHistory <- fit(fullFacesModel,
                           validation_split = 0.2, batch_size = 32,
                           early_stop = list(earlyStop),
                           epochs = 100)
-
 
 
 
